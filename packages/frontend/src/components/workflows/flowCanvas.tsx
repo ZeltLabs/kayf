@@ -44,9 +44,18 @@ export default function FlowCanvas() {
                     nodesConnectable={true}
                     elementsSelectable={true}
                     fitView
-                    onNodeClick={(e) => e.stopPropagation()}
+                    fitViewOptions={{
+                        padding: 0.5,
+                        maxZoom: 1,  // Standard-Zoom-Level begrenzen
+                        duration: 0  // Sofortiges Zoomen ohne Animation
+                    }}
+                    defaultViewport={{ 
+                        x: 0, 
+                        y: 0, 
+                        zoom: 0.7  // Start mit herausgezoomter Ansicht
+                    }}
+                    onNodeClick={(e) => e.stopPropagation()} 
                 >
-                    <MiniMap nodeColor={() => '#222'} maskColor="rgba(255,255,255,0.1)" />
                     <Controls />
                     <Background color="#1e1e1e" gap={12} />
                 </ReactFlow>

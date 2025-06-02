@@ -3,6 +3,8 @@
 import { Handle, Position, NodeProps } from "reactflow"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
+import { Type } from 'lucide-react';
+
 
 export default function TextNode({ id, data }: NodeProps) {
   return (
@@ -10,7 +12,7 @@ export default function TextNode({ id, data }: NodeProps) {
       <div className="space-y-2">
         <div className="flex justify-between items-start">
           <div>
-            <div className="font-bold text-md">Text Input</div> 
+            <div className="font-bold text-md flex gap-4"><Type></Type>Text Input</div> 
             <div className="text-xs text-gray-300">From Playground</div> 
           </div>
           <Handle 
