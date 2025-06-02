@@ -83,6 +83,7 @@
     "react-error-boundary": "^6.0.0",
     "react-hook-form": "^7.56.1",
     "react-resizable-panels": "^2.1.9",
+    "reactflow": "^11.11.4",
     "recharts": "^2.15.3",
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",

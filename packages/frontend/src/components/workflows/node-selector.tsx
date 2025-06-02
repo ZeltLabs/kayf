@@ -79,8 +79,23 @@ export default function NodeSelector({ categories }: { categories: NodeCategory[
 }
 
 function NodeSidebarItem({ node }: { node: NodeEntry }) {
+    const handleDragStart = (event: React.DragEvent) => {
+        const dragData = {
+            id: node.id,
+            name: node.name,
+            type: node.id, 
+        }
+
+        event.dataTransfer.setData("application/reactflow", JSON.stringify(dragData))
+        event.dataTransfer.effectAllowed = "move"
+    }
+
     return (
-        <SidebarMenuItem className="group flex items-center gap-3 p-3 h-16 rounded-md bg-primary/5 hover:bg-primary/10 transition overflow-hidden cursor-move">
+        <SidebarMenuItem
+            className="group flex items-center gap-3 p-3 h-16 rounded-md bg-primary/5 hover:bg-primary/10 transition overflow-hidden cursor-move"
+            draggable
+            onDragStart={handleDragStart}
+        >
             <div className="flex-shrink-0 text-muted-foreground group-hover:text-primary flex items-center justify-center">
                 {node.icon}
             </div>
