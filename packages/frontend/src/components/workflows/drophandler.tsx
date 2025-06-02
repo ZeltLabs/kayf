@@ -34,14 +34,10 @@ export default function DropHandler({
 
             const newNode = {
                 id: `${nodeData.id}-${+new Date()}`,
-                type: "default",
+                type: nodeData.id, // Wichtig: Direkte Übernahme des Typs ("text" oder "chat")
                 position,
                 data: { label: nodeData.name },
-                style: {
-                    background: "#1f1f1f",
-                    color: "#fff",
-                    border: "1px solid #444",
-                },
+                // Kein style für benutzerdefinierte Nodes
             }
 
             setNodes((nds) => nds.concat(newNode))

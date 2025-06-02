@@ -11,7 +11,9 @@ import ReactFlow, {
     Node,
 } from "reactflow"
 import "reactflow/dist/style.css"
-import DropHandler from "./drophandler" 
+import DropHandler from "./drophandler"
+import TextNode from "./text-node"
+import ChatNode from "./chat-node"
 
 const initialNodes: Node<any, string | undefined>[] = []
 const initialEdges: any[] = []
@@ -34,7 +36,15 @@ export default function FlowCanvas() {
                     onNodesChange={onNodesChange}
                     onEdgesChange={onEdgesChange}
                     onConnect={onConnect}
+                    nodeTypes={{
+                        text: TextNode,
+                        chat: ChatNode
+                    }}
+                    nodesDraggable={true}
+                    nodesConnectable={true}
+                    elementsSelectable={true}
                     fitView
+                    onNodeClick={(e) => e.stopPropagation()}
                 >
                     <MiniMap nodeColor={() => '#222'} maskColor="rgba(255,255,255,0.1)" />
                     <Controls />
