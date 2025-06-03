@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import {
     Sidebar,
     SidebarContent,
@@ -10,18 +10,15 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { ChevronRight } from "lucide-react"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
+import { NodeCategory, NodeData } from "@/types/workflows"
 
-interface NodeEntry {
-    id: string
-    icon: React.ReactNode
-    name: string
-    description: string
+interface NodeSidebarItemProps {
+    node: NodeData
 }
 
-interface NodeCategory {
-    id: string
-    label: string
-    nodes: NodeEntry[]
+interface NodeSelectorProps {
+    categories: NodeCategory[]
+    nodes: NodeData[]
 }
 
 function SidebarSection({
@@ -55,16 +52,24 @@ function SidebarSection({
     );
 }
 
-export default function NodeSelector({ categories }: { categories: NodeCategory[] }) {
+export default function NodeSelector({ categories, nodes }: NodeSelectorProps) {
+    const grouped = useMemo(() => {
+        return categories
+            .sort((a, b) => a.label.localeCompare(b.label))
+            .map((cat) => ({
+                ...cat,
+                nodes: nodes
+                    .filter((n) => n.type === cat.type)
+                    .sort((a, b) => a.display_name.localeCompare(b.display_name)),
+            }));
+    }, [categories, nodes]);
+
     return (
         <Sidebar variant="inset" className="relative h-full grow bg-secondary border rounded shadow-md flex flex-col overflow-hidden">
             <SidebarContent className="flex flex-col flex-1">
                 <ScrollArea className="h-full pr-2">
-                    {categories.map((cat) => (
-                        <SidebarSection
-                            key={cat.id}
-                            title={cat.label}
-                        >
+                    {grouped.map((cat) => (
+                        <SidebarSection key={cat.type} title={cat.label}>
                             <SidebarMenu className="gap-1 text-sm text-muted-foreground">
                                 {cat.nodes.map((node) => (
                                     <NodeSidebarItem key={node.id} node={node} />
@@ -78,12 +83,10 @@ export default function NodeSelector({ categories }: { categories: NodeCategory[
     )
 }
 
-function NodeSidebarItem({ node }: { node: NodeEntry }) {
+function NodeSidebarItem({ node }: NodeSidebarItemProps) {
     const handleDragStart = (event: React.DragEvent) => {
         const dragData = {
-            id: node.id,
-            name: node.name,
-            type: node.id, 
+            type: node.id, // ✅ must match nodeTypes key
         }
 
         event.dataTransfer.setData("application/reactflow", JSON.stringify(dragData))
@@ -96,12 +99,9 @@ function NodeSidebarItem({ node }: { node: NodeEntry }) {
             draggable
             onDragStart={handleDragStart}
         >
-            <div className="flex-shrink-0 text-muted-foreground group-hover:text-primary flex items-center justify-center">
-                {node.icon}
-            </div>
             <div className="flex flex-col justify-center overflow-hidden">
                 <div className="font-medium text-foreground truncate leading-tight">
-                    {node.name}
+                    {node.display_name}
                 </div>
                 <div className="text-xs text-muted-foreground truncate leading-snug">
                     {node.description}

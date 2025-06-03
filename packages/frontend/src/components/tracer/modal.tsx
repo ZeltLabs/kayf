@@ -39,9 +39,26 @@ import { format, addDays } from "date-fns";
 import { DateRange } from "react-day-picker";
 
 const searchResults = [
-    { id: 1, icon: "https://numericcitizen.me/content/images/size/w1200/wp-content/uploads/2020/04/notion-logo.302c0d9f08f849f0805891d0c2b9b563.png", title: "Workflows Product Demo 01.08.2024" },
-    { id: 2, icon: "https://numericcitizen.me/content/images/size/w1200/wp-content/uploads/2020/04/notion-logo.302c0d9f08f849f0805891d0c2b9b563.png", title: "Workflows Product Demo 01.08.2024" },
-    { id: 3, icon: "https://numericcitizen.me/content/images/size/w1200/wp-content/uploads/2020/04/notion-logo.302c0d9f08f849f0805891d0c2b9b563.png", title: "Workflows Product Demo 01.08.2024" },
+    { id: 1, icon: "https://numericcitizen.me/content/images/size/w1200/wp-content/uploads/2020/04/notion-logo.302c0d9f08f849f0805891d0c2b9b563.png", title: "Product Demo Kickoff – 01.08.2024" },
+    { id: 2, icon: "https://numericcitizen.me/content/images/size/w1200/wp-content/uploads/2020/04/notion-logo.302c0d9f08f849f0805891d0c2b9b563.png", title: "Pitch Deck – Kayf AI Search" },
+    { id: 3, icon: "https://numericcitizen.me/content/images/size/w1200/wp-content/uploads/2020/04/notion-logo.302c0d9f08f849f0805891d0c2b9b563.png", title: "Live Demo Notes – 15.09.2024" },
+    { id: 4, icon: "https://numericcitizen.me/content/images/size/w1200/wp-content/uploads/2020/04/notion-logo.302c0d9f08f849f0805891d0c2b9b563.png", title: "Tech Pitch Final – 2024" },
+    { id: 5, icon: "https://numericcitizen.me/content/images/size/w1200/wp-content/uploads/2020/04/notion-logo.302c0d9f08f849f0805891d0c2b9b563.png", title: "VC Pitch Preparation – June 2024" },
+    { id: 6, icon: "https://numericcitizen.me/content/images/size/w1200/wp-content/uploads/2020/04/notion-logo.302c0d9f08f849f0805891d0c2b9b563.png", title: "Product Demo – Internal Review" },
+    { id: 7, icon: "https://numericcitizen.me/content/images/size/w1200/wp-content/uploads/2020/04/notion-logo.302c0d9f08f849f0805891d0c2b9b563.png", title: "Kayf Investor Pitch 10.2024" },
+    { id: 8, icon: "https://numericcitizen.me/content/images/size/w1200/wp-content/uploads/2020/04/notion-logo.302c0d9f08f849f0805891d0c2b9b563.png", title: "Demo Feedback Round 1" },
+    { id: 9, icon: "https://numericcitizen.me/content/images/size/w1200/wp-content/uploads/2020/04/notion-logo.302c0d9f08f849f0805891d0c2b9b563.png", title: "Pitch Training – Slides & Notes" },
+    { id: 10, icon: "https://numericcitizen.me/content/images/size/w1200/wp-content/uploads/2020/04/notion-logo.302c0d9f08f849f0805891d0c2b9b563.png", title: "Product Walkthrough Script" },
+    { id: 11, icon: "https://numericcitizen.me/content/images/size/w1200/wp-content/uploads/2020/04/notion-logo.302c0d9f08f849f0805891d0c2b9b563.png", title: "Demo Checklist – v1.3" },
+    { id: 12, icon: "https://numericcitizen.me/content/images/size/w1200/wp-content/uploads/2020/04/notion-logo.302c0d9f08f849f0805891d0c2b9b563.png", title: "Final Pitch – Jugend Innovativ" },
+    { id: 13, icon: "https://numericcitizen.me/content/images/size/w1200/wp-content/uploads/2020/04/notion-logo.302c0d9f08f849f0805891d0c2b9b563.png", title: "Demo Plan – Q3 Launch" },
+    { id: 14, icon: "https://numericcitizen.me/content/images/size/w1200/wp-content/uploads/2020/04/notion-logo.302c0d9f08f849f0805891d0c2b9b563.png", title: "Product Demo Script – Beta Review" },
+    { id: 15, icon: "https://numericcitizen.me/content/images/size/w1200/wp-content/uploads/2020/04/notion-logo.302c0d9f08f849f0805891d0c2b9b563.png", title: "Investor Deck – May Revision" },
+    { id: 16, icon: "https://numericcitizen.me/content/images/size/w1200/wp-content/uploads/2020/04/notion-logo.302c0d9f08f849f0805891d0c2b9b563.png", title: "Pitch Outline – GCER 2025" },
+    { id: 17, icon: "https://numericcitizen.me/content/images/size/w1200/wp-content/uploads/2020/04/notion-logo.302c0d9f08f849f0805891d0c2b9b563.png", title: "Product Demo v2 – Flowchart" },
+    { id: 18, icon: "https://numericcitizen.me/content/images/size/w1200/wp-content/uploads/2020/04/notion-logo.302c0d9f08f849f0805891d0c2b9b563.png", title: "Demo Meeting Agenda – 07.2024" },
+    { id: 19, icon: "https://numericcitizen.me/content/images/size/w1200/wp-content/uploads/2020/04/notion-logo.302c0d9f08f849f0805891d0c2b9b563.png", title: "Kayf Overview – Elevator Pitch" },
+    { id: 20, icon: "https://numericcitizen.me/content/images/size/w1200/wp-content/uploads/2020/04/notion-logo.302c0d9f08f849f0805891d0c2b9b563.png", title: "Team Feedback – Pitch Round 2" }
 ];
 
 function SearchBar({ query, setQuery }: { query: string; setQuery: (v: string) => void }) {

@@ -34,7 +34,7 @@ export default function DropHandler({
 
             const newNode = {
                 id: `${nodeData.id}-${+new Date()}`,
-                type: nodeData.id, // Wichtig: Direkte Übernahme des Typs ("text" oder "chat")
+                type: nodeData.id,
                 position,
                 data: { label: nodeData.name },
                 // Kein style für benutzerdefinierte Nodes
