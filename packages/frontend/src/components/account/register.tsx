@@ -5,43 +5,33 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { ZeltLogo } from "@/components/logo"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import axios from "axios"
 
-export default function LoginPage() {
+export default function RegisterPage() {
+    const [firstName, setFirstName] = useState("")
+    const [surname, setSurname] = useState("")
+    const [username, setUsername] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [error, setError] = useState("")
+    const [success, setSuccess] = useState("")
 
-    useEffect(() => {
-        const listener = (event: MessageEvent) => {
-            if (event.origin !== "http://localhost:8000") return
-            const token = event.data.token
-            if (token) {
-                localStorage.setItem("access_token", token)
-                window.location.href = "/"
-            }
-        }
-        window.addEventListener("message", listener)
-        return () => window.removeEventListener("message", listener)
-    }, [])
-
-    const handleLogin = async (e: React.FormEvent) => {
+    const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault()
         setError("")
+        setSuccess("")
 
         try {
-            const res = await axios.post("http://localhost:8000/login", {
+            await axios.post("http://localhost:8000/register", {
+                full_name: `${firstName} ${surname}`,
+                username,
                 email,
                 password,
             })
-
-            const token = res.data.token
-            localStorage.setItem("access_token", token)
-            window.location.href = "/"
-        } catch (err: unknown) {
-            const msg =
-                err.response?.data?.detail || "Invalid credentials or unexpected error"
+            setSuccess("Check your inbox for the verification email.")
+        } catch (err: any) {
+            const msg = err.response?.data?.detail || "Registration failed"
             setError(msg)
         }
     }
@@ -56,22 +46,19 @@ export default function LoginPage() {
 
     return (
         <section className="relative flex min-h-screen items-center justify-center px-4 py-16 md:py-32 bg-background dark:bg-background overflow-hidden">
-            {/* Animated Background Gradient */}
-
             <div
                 className="absolute inset-0 z-0 bg-gradient-to-br from-primary via-secondary to-muted dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-700 bg-400 animated-gradient blur-2xl opacity-50"
                 aria-hidden
             />
 
-
-            <form onSubmit={handleLogin} className="bg-card z-1 w-full max-w-sm rounded-[calc(var(--radius)+.125rem)] border p-0.5 shadow-md dark:[--color-muted:var(--color-zinc-900)]">
+            <form onSubmit={handleRegister} className="bg-card z-1 w-full max-w-sm rounded-[calc(var(--radius)+.125rem)] border p-0.5 shadow-md dark:[--color-muted:var(--color-zinc-900)]">
                 <div className="p-8 pb-6">
                     <div>
                         <Link href="/" aria-label="Go home">
                             <ZeltLogo />
                         </Link>
-                        <h1 className="mb-1 mt-4 text-xl font-semibold">Sign in to Kayf</h1>
-                        <p className="text-sm text-muted-foreground">Welcome back! Please enter details.</p>
+                        <h1 className="mb-1 mt-4 text-xl font-semibold">Create your Kayf account</h1>
+                        <p className="text-sm text-muted-foreground">Start your journey. It's quick and free.</p>
                     </div>
 
                     <div className="mt-6 grid grid-cols-2 gap-3">
@@ -105,7 +92,7 @@ export default function LoginPage() {
                         <Button
                             type="button"
                             variant="outline"
-                            onClick={() => loginWithProvider("github")} // not Microsoft unless you implement it
+                            onClick={() => loginWithProvider("github")}
                             className="flex items-center justify-center gap-2"
                         >
                             <svg
@@ -131,51 +118,77 @@ export default function LoginPage() {
                     </div>
 
                     <div className="space-y-6 mt-6">
+                        {/* Full name row */}
+                        <div className="grid grid-cols-2 gap-3">
+                            <div>
+                                <Label htmlFor="first" className="block text-sm">First name</Label>
+                                <Input
+                                    type="text"
+                                    required
+                                    id="first"
+                                    value={firstName}
+                                    onChange={(e) => setFirstName(e.target.value)}
+                                />
+                            </div>
+                            <div>
+                                <Label htmlFor="surname" className="block text-sm">Surname</Label>
+                                <Input
+                                    type="text"
+                                    required
+                                    id="surname"
+                                    value={surname}
+                                    onChange={(e) => setSurname(e.target.value)}
+                                />
+                            </div>
+                        </div>
+
+                        {/* Username */}
                         <div className="space-y-2">
-                            <Label htmlFor="email" className="block text-sm">
-                                Email
-                            </Label>
+                            <Label htmlFor="username" className="block text-sm">Username</Label>
+                            <Input
+                                type="text"
+                                required
+                                id="username"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                            />
+                        </div>
+
+                        {/* Email */}
+                        <div className="space-y-2">
+                            <Label htmlFor="email" className="block text-sm">Email</Label>
                             <Input
                                 type="email"
                                 required
-                                name="email"
                                 id="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                             />
                         </div>
 
-                        <div className="space-y-0.5">
-                            <div className="flex items-center justify-between">
-                                <Label htmlFor="pwd" className="text-sm">
-                                    Password
-                                </Label>
-                                <Button asChild variant="link" size="sm">
-                                    <Link href="zeltlabs.com/reset-password" className="text-sm">
-                                        Forgot password?
-                                    </Link>
-                                </Button>
-                            </div>
+                        {/* Password */}
+                        <div className="space-y-2">
+                            <Label htmlFor="pwd" className="block text-sm">Password</Label>
                             <Input
                                 type="password"
                                 required
-                                name="pwd"
                                 id="pwd"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                             />
                         </div>
 
-                        <Button className="w-full" type="submit">Sign in</Button>
-                        {error && <p className="text-sm text-red-500 my-2 mx-auto text-center">{error}</p>}
+                        <Button className="w-full" type="submit">Create account</Button>
+                        {error && <p className="text-sm text-red-500 my-2 text-center">{error}</p>}
+                        {success && <p className="text-sm text-green-600 my-2 text-center">{success}</p>}
                     </div>
                 </div>
 
                 <div className="bg-muted rounded-b-[calc(var(--radius)+.125rem)] border-t p-3">
                     <p className="text-center text-sm">
-                        Don’t have an account?
+                        Already have an account?
                         <Button asChild variant="link" className="px-2">
-                            <Link href="zeltlabs.com/register">Create one</Link>
+                            <Link href="/login">Sign in</Link>
                         </Button>
                     </p>
                 </div>

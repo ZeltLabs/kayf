@@ -57,7 +57,7 @@ export function Editor({
             const doc = getDocFromMap(id, yjsDocMap)
 
             const provider = new HocuspocusProvider({
-                url: "ws://localhost:1234",
+                url: "ws://192.168.171.160:1234",
                 name: id, // use `id`, not `docId` from outer scope
                 document: doc,
             })
